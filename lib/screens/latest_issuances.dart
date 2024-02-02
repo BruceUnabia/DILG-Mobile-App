@@ -12,6 +12,9 @@ class _LatestIssuancesState extends State<LatestIssuances> {
   List<String> categories = ['Category 1', 'Category 2', 'Category 3'];
   String selectedCategory = 'Category 1'; // Default selection
 
+  TextEditingController searchController =
+      TextEditingController(); // Declare searchController
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +45,6 @@ class _LatestIssuancesState extends State<LatestIssuances> {
   }
 
   Widget _buildBody() {
-    TextEditingController searchController = TextEditingController();
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -63,7 +64,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                 ),
                 SizedBox(height: 8.0),
                 Container(
-                  margin: EdgeInsets.only(top: 8.0),
+                  margin: EdgeInsets.only(top: 0.1, bottom: 0.1),
                   padding: EdgeInsets.all(16.0),
                   child: DropdownButton<String>(
                     value: selectedCategory,
@@ -91,7 +92,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
 
           // Search Input
           Container(
-            margin: EdgeInsets.only(top: 8.0),
+            margin: EdgeInsets.only(top: 0.1, bottom: 0.1),
             padding: EdgeInsets.all(16.0),
             child: TextField(
               controller: searchController,
@@ -122,11 +123,19 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 5.0),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                  height: 2,
+                ),
                 for (int index = 0; index < 11; index++)
                   InkWell(
                     onTap: () {
-                      _navigateToDetailsPage(context, 'Row $index');
+                      _navigateToDetailsPage(
+                        context,
+                        'Title $index is a very long title that might overflow and needs to be truncated\nRef #123\nDate $index',
+                      );
                     },
                     child: Card(
                       elevation: 4,
