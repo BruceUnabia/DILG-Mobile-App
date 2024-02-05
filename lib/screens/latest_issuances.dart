@@ -9,11 +9,16 @@ class LatestIssuances extends StatefulWidget {
 }
 
 class _LatestIssuancesState extends State<LatestIssuances> {
-  List<String> categories = ['Category 1', 'Category 2', 'Category 3'];
-  String selectedCategory = 'Category 1'; // Default selection
-
-  TextEditingController searchController =
-      TextEditingController(); // Declare searchController
+  List<String> categories = [
+    'All Outcome Area',
+    'ACCOUNTABLE, TRANSPARENT, PARTICIPATIVE, AND EFFECTIVE LOCAL GOVERNANCE',
+    'PEACEFUL, ORDERLY AND SAFE LGUS STRATEGIC PRIORITIES',
+    'SOCIALLY PROTECTIVE LGUS',
+    'ENVIRONMENT-PROTECTIVE, CLIMATE CHANGE ADAPTIVE AND DISASTER RESILIENT  LGUS',
+    'BUSINESS-FRIENDLY AND COMPETITIVE LGUS',
+    'STRENGTHENING OF INTERNAL GOVERNANCE',
+  ];
+  String selectedCategory = 'All Outcome Area'; // Default selection
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,8 @@ class _LatestIssuancesState extends State<LatestIssuances> {
   }
 
   Widget _buildBody() {
+    TextEditingController searchController = TextEditingController();
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -65,7 +72,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                 SizedBox(height: 8.0),
                 Container(
                   margin: EdgeInsets.only(top: 0.1, bottom: 0.1),
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 1.0),
                   child: DropdownButton<String>(
                     value: selectedCategory,
                     onChanged: (String? newValue) {
@@ -81,7 +88,24 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: Row(
+                            children: [
+                              Icon(Icons.arrow_downward,
+                                  color:
+                                      Colors.blue[900]), // Add your icon here
+                              SizedBox(width: 10.0), // Adjust spacing as needed
+                              Expanded(
+                                child: Text(
+                                  value,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -134,7 +158,10 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                     onTap: () {
                       _navigateToDetailsPage(
                         context,
-                        'Title $index is a very long title that might overflow and needs to be truncated\nRef #123\nDate $index',
+                        'Title $index is a very long title that might overflow and needs to be truncated',
+                        'content $index',
+                        '${index + 1}',
+                        '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
                       );
                     },
                     child: Card(
@@ -155,7 +182,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Title $index is a very long title that might overflow and needs to be truncated',
+                                    'Card Title $index is a very long title that might overflow and needs to be truncated',
                                     maxLines:
                                         1, // Set the maximum number of lines
                                     overflow: TextOverflow.ellipsis,
@@ -168,11 +195,10 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                                       height:
                                           4.0), // Adjust the spacing as needed
                                   Text(
-                                    'Ref #123', // Static reference number
+                                    'Ref #${index + 1}',
                                     style: TextStyle(
-                                      fontSize: 12, // Make it very small
-                                      color: Colors
-                                          .grey, // Customize color if needed
+                                      fontSize: 12,
+                                      color: Colors.grey,
                                     ),
                                   ),
                                 ],
@@ -180,7 +206,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                             ),
                             SizedBox(width: 16.0),
                             Text(
-                              'Date $index',
+                              '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -198,13 +224,21 @@ class _LatestIssuancesState extends State<LatestIssuances> {
     );
   }
 
-  void _navigateToDetailsPage(BuildContext context, String content) {
+  void _navigateToDetailsPage(
+    BuildContext context,
+    String title,
+    String content,
+    String referenceNo,
+    String date,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailsScreen(
-          title: 'Details',
+          title: title,
           content: content,
+          referenceNo: referenceNo,
+          date: date,
         ),
       ),
     );

@@ -75,18 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  bool _handleBackButton() {
-    // Handle back button press logic here
-    // You can check conditions and navigate accordingly
-    // For example, if you are on a specific screen, navigate to the home screen
-    if (_currentIndex != 0) {
-      setState(() {
-        _currentIndex = 0;
-      });
-      return false; // Prevent back navigation
-    }
-    return true; // Allow back navigation
-  }
+  // bool _handleBackButton() {
+  //   // Handle back button press logic here
+  //   // You can check conditions and navigate accordingly
+  //   // For example, if you are on a specific screen, navigate to the home screen
+  //   if (_currentIndex != 0) {
+  //     setState(() {
+  //       _currentIndex = 0;
+  //     });
+  //     return false; // Prevent back navigation
+  //   }
+  //   return true; // Allow back navigation
+  // }
 
   Widget _buildBody() {
     switch (_currentIndex) {

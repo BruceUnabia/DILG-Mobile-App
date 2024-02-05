@@ -14,8 +14,13 @@ class _LegalOpinionsState extends State<LegalOpinions> {
   List<LegalOpinion> _legalOpinions = [];
   List<LegalOpinion> get legalOpinions => _legalOpinions;
 
-  List<String> categories = ['Category 1', 'Category 2', 'Category 3'];
-  String selectedCategory = 'Category 1'; // Default selection
+  List<String> categories = [
+    '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    '2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  ];
+  String selectedCategory =
+      '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.'; // Default selection
 
   @override
   void initState() {
@@ -52,14 +57,16 @@ class _LegalOpinionsState extends State<LegalOpinions> {
           'Legal Opinions',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.blue[900]),
+            icon: Icon(Icons.menu, color: Colors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+        backgroundColor: Colors.blue[900],
       ),
       body: _buildBody(),
       drawer: Sidebar(
@@ -132,9 +139,16 @@ class _LegalOpinionsState extends State<LegalOpinions> {
                     items: categories
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
+                          value: value,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  value,
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                          ));
                     }).toList(),
                   ),
                 ),
@@ -157,11 +171,17 @@ class _LegalOpinionsState extends State<LegalOpinions> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(height: 5.0),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                  height: 2,
+                ),
                 SizedBox(height: 16.0),
                 for (int index = 0; index < _legalOpinions.length; index++)
                   InkWell(
                     onTap: () {
-                      _navigateToDetailsPage(context, 'Row $index');
+                      _navigateToDetailsPage(context, _legalOpinions[index]);
                     },
                     child: Card(
                       elevation: 4,
@@ -177,26 +197,32 @@ class _LegalOpinionsState extends State<LegalOpinions> {
                                     900]), // Replace with your desired icon
                             SizedBox(width: 16.0),
                             Expanded(
-                              child: Text(
-                                _legalOpinions[index].issuance.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _legalOpinions[index].issuance.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.0),
+                                  Text(
+                                    'Ref #${_legalOpinions[index].issuance.referenceNo}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 4.0),
 
-                            Text(
-                              'Ref #${_legalOpinions[index].issuance.referenceNo}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
                             SizedBox(width: 16.0),
+
                             Text(
                               DateFormat('MMMM dd, yyyy').format(
                                 DateTime.parse(
@@ -219,14 +245,16 @@ class _LegalOpinionsState extends State<LegalOpinions> {
     );
   }
 
-  void _navigateToDetailsPage(BuildContext context, String content) {
+  void _navigateToDetailsPage(BuildContext context, LegalOpinion issuance) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailsScreen(
-          title: 'Details',
-          content: content,
-        ),
+            title: issuance.issuance.title,
+            content: '',
+            referenceNo: '${issuance.issuance.referenceNo}',
+            date:
+                '${DateFormat('MMMM dd, yyyy').format(DateTime.parse(issuance.issuance.date))}'),
       ),
     );
   }

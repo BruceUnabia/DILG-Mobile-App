@@ -11,6 +11,7 @@ import '../screens/search_screen.dart';
 import '../screens/library_screen.dart';
 import '../screens/intro_section.dart';
 import '../screens/login_screen.dart';
+import '../screens/edit_user.dart';
 
 class Routes {
   static const String home = '/';
@@ -25,6 +26,7 @@ class Routes {
   static const String republicActs = '/republic-acts';
   static const String legalOpinions = '/legal-opinions';
   static const String login = '/login';
+  static const String editUser = 'edit_user';
 
   static Map<String, WidgetBuilder> getRoutes(BuildContext context) {
     return {
@@ -42,6 +44,7 @@ class Routes {
       login: (context) => LoginScreen(
             title: 'login',
           ),
+      editUser: (context) => EditUser(),
     };
   }
 }

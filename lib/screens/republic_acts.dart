@@ -19,14 +19,16 @@ class _RepublicActsState extends State<RepublicActs> {
           'Republic Acts',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.blue[900]),
+            icon: Icon(Icons.menu, color: Colors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+        backgroundColor: Colors.blue[900],
       ),
       body: _buildBody(),
       drawer: Sidebar(
@@ -99,9 +101,16 @@ class _RepublicActsState extends State<RepublicActs> {
                     items: categories
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
+                          value: value,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  value,
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                          ));
                     }).toList(),
                   ),
                 ),
@@ -124,11 +133,23 @@ class _RepublicActsState extends State<RepublicActs> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(height: 5.0),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                  height: 2,
+                ),
                 SizedBox(height: 16.0),
                 for (int index = 0; index < 11; index++)
                   InkWell(
                     onTap: () {
-                      _navigateToDetailsPage(context, 'Row $index');
+                      _navigateToDetailsPage(
+                        context,
+                        'Card Title $index is a very long title that might overflow and needs to be truncated',
+                        'Content $index',
+                        '${index + 1}',
+                        '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+                      );
                     },
                     child: Card(
                       elevation: 4,
@@ -144,18 +165,31 @@ class _RepublicActsState extends State<RepublicActs> {
                                     900]), // Replace with your desired icon
                             SizedBox(width: 16.0),
                             Expanded(
-                              child: Text(
-                                'Row $index',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                  Text(
+                                    'Card Title $index is a very long title that might overflow and needs to be truncated',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.0),
+                                  Text(
+                                    'Ref #${index + 1}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ])),
                             SizedBox(width: 16.0),
                             Text(
-                              'Date $index',
+                              '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -173,13 +207,21 @@ class _RepublicActsState extends State<RepublicActs> {
     );
   }
 
-  void _navigateToDetailsPage(BuildContext context, String content) {
+  void _navigateToDetailsPage(
+    BuildContext context,
+    String title,
+    String content,
+    String referenceNo,
+    String date,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailsScreen(
-          title: 'Details',
+          title: title,
           content: content,
+          referenceNo: referenceNo,
+          date: date,
         ),
       ),
     );

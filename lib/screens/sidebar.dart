@@ -9,6 +9,7 @@ import 'legal_opinions.dart';
 import 'home_screen.dart';
 import 'about_screen.dart';
 import 'developers_screen.dart';
+import 'edit_user.dart';
 
 class Sidebar extends StatelessWidget {
   final int currentIndex;
@@ -61,8 +62,11 @@ class Sidebar extends StatelessWidget {
             _buildSidebarItem(Icons.info, 'About', 8, context),
             _buildSidebarItem(Icons.people, 'Developers', 9, context),
             Divider(color: Colors.white),
-            _buildSidebarItem(Icons.exit_to_app, 'Logout', 10, context,
+            _buildSidebarItem(Icons.person, 'View Profile', 10, context),
+            _buildSidebarItem(Icons.exit_to_app, 'Logout', 11, context,
                 onPressed: () {
+              Navigator.popUntil(
+                  context, (route) => route.isFirst); // Pop until root
               Navigator.pushReplacementNamed(context, '/login');
             }),
           ],
@@ -93,6 +97,8 @@ class Sidebar extends StatelessWidget {
         return About();
       case 9:
         return Developers();
+      case 10:
+        return EditUser();
       // Add cases for other items
       // ...
       default:

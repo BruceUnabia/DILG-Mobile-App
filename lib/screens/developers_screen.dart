@@ -13,12 +13,14 @@ class Developers extends StatelessWidget {
           'Developers',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.blue[900]),
+          icon: Icon(Icons.menu, color: Colors.white),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
+        backgroundColor: Colors.blue[900],
       ),
       drawer: Sidebar(
         currentIndex: 9,

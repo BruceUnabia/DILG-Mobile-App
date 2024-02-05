@@ -10,14 +10,16 @@ class About extends StatelessWidget {
           'About',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.blue[900]),
+            icon: Icon(Icons.menu, color: Colors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
+        backgroundColor: Colors.blue[900],
       ),
       drawer: Sidebar(
         currentIndex: 1,
@@ -26,39 +28,41 @@ class About extends StatelessWidget {
           _navigateToSelectedPage(context, index);
         },
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // Large logo
-              CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage('assets/dilg-main.png'),
-              ),
-              SizedBox(height: 16),
-              // Text below the logo
-              AnimatedTextFade(
-                text:
-                    'Department of the Interior and Local Government Bohol Province',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 16),
-              // Additional text
-              AnimatedTextFade(
-                text:
-                    'The DILG Bohol Issuances App is designed to house various issuances from the DILG Bohol Province, including the Latest Issuances, Joint Circulars, Memo Circulars, Presidential Directives, Draft Issuances, Republic Acts, and Legal Opinions. The primary objective of this app is to offer a comprehensive resource for accessing and staying updated on official documents and legal materials relevant to the province.',
-                fontSize: 16,
-              ),
-              SizedBox(height: 16),
-              AnimatedTextFade(
-                text: '© DILG-Bohol Province 2024',
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Large logo
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage('assets/dilg-main.png'),
+                ),
+                SizedBox(height: 16),
+                // Text below the logo
+                AnimatedTextFade(
+                  text:
+                      'Department of the Interior and Local Government Bohol Province',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 16),
+                // Additional text
+                AnimatedTextFade(
+                  text:
+                      'The DILG Bohol Issuances App is designed to house various issuances from the DILG Bohol Province, including the Latest Issuances, Joint Circulars, Memo Circulars, Presidential Directives, Draft Issuances, Republic Acts, and Legal Opinions. The primary objective of this app is to offer a comprehensive resource for accessing and staying updated on official documents and legal materials relevant to the province.',
+                  fontSize: 16,
+                ),
+                SizedBox(height: 16),
+                AnimatedTextFade(
+                  text: '© DILG-Bohol Province 2024',
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
           ),
         ),
       ),

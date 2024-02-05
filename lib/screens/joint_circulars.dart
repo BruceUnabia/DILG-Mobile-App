@@ -8,8 +8,13 @@ class JointCirculars extends StatefulWidget {
 }
 
 class _JointCircularsState extends State<JointCirculars> {
-  List<String> categories = ['Category 1', 'Category 2', 'Category 3'];
-  String selectedCategory = 'Category 1'; // Default selection
+  List<String> categories = [
+    '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    '2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  ];
+  String selectedCategory =
+      '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.'; // Default selection
 
   @override
   Widget build(BuildContext context) {
@@ -100,24 +105,19 @@ class _JointCircularsState extends State<JointCirculars> {
                     items: categories
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
+                          value: value,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  value,
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                          ));
                     }).toList(),
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 16.0),
-
-          // Sample Table Section
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
                 Text(
                   'Latest',
                   style: TextStyle(
@@ -125,62 +125,111 @@ class _JointCircularsState extends State<JointCirculars> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 16.0),
-                for (int index = 0; index < 11; index++)
-                  InkWell(
-                    onTap: () {
-                      _navigateToDetailsPage(context, 'Row $index');
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.article,
-                                color: Colors.blue[
-                                    900]), // Replace with your desired icon
-                            SizedBox(width: 16.0),
-                            Expanded(
-                              child: Text(
-                                'Row $index',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 16.0),
-                            Text(
-                              'Date $index',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                SizedBox(height: 5.0),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 2,
+                  height: 2,
+                ),
               ],
             ),
           ),
+
+          SizedBox(height: 16.0),
+
+          // List of Cards (Updated design)
+          _buildCard(0),
+          _buildCard(1),
+          _buildCard(2),
+          // Add more cards as needed
         ],
       ),
     );
   }
 
-  void _navigateToDetailsPage(BuildContext context, String content) {
+  Widget _buildCard(int index) {
+    return InkWell(
+      onTap: () {
+        _navigateToDetailsPage(
+          context,
+          'Card Title $index is a very long title that might overflow and needs to be truncated',
+          'content $index',
+          '${index + 1}',
+          '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+        );
+      },
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.only(bottom: 16.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Icon(Icons.article, color: Colors.blue[900]),
+                  SizedBox(width: 16.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Card Title $index is a very long title that might overflow and needs to be truncated',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 4.0),
+                        Text(
+                          'Ref #${index + 1}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 16.0),
+                  Text(
+                    '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToDetailsPage(
+    BuildContext context,
+    String title,
+    String content,
+    String referenceNo,
+    String date,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DetailsScreen(
-          title: 'Details',
+          title: title,
           content: content,
+          referenceNo: referenceNo,
+          date: date,
         ),
       ),
     );
