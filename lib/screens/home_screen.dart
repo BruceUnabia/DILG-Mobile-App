@@ -1,3 +1,9 @@
+import 'draft_issuances.dart';
+import 'joint_circulars.dart';
+import 'legal_opinions.dart';
+import 'memo_circulars.dart';
+import 'presidential_directives.dart';
+import 'republic_acts.dart';
 import 'package:flutter/material.dart';
 import 'search_screen.dart';
 import 'library_screen.dart';
@@ -17,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     'Home',
     'Search',
     'Library',
-    'Latest Issuances'
   ];
 
   @override
@@ -44,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Sidebar(
         currentIndex: _currentIndex,
         onItemSelected: (index) {
-          _navigateToSelectedPage(context, index);
+          // _navigateToSelectedPage(context, index);
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -148,6 +153,18 @@ class _HomeScreenState extends State<HomeScreen> {
         return LibraryScreen();
       case 3:
         return LatestIssuances();
+      case 4:
+        return JointCirculars();
+      case 5:
+        return MemoCirculars();
+      case 6:
+        return PresidentialDirectives();
+      case 7:
+        return DraftIssuances();
+      case 8:
+        return RepublicActs();
+      case 9:
+        return LegalOpinions();
       default:
         return Container();
     }
@@ -185,14 +202,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _navigateToSelectedPage(BuildContext context, int index) {
-    switch (index) {
-      case 1:
-        _navigateToLatestIssuances(context);
-        break;
-      // Add conditions for other pages if needed
-    }
-  }
+  // void _navigateToSelectedPage(BuildContext context, int index) {
+  //   switch (index) {
+  //     case 1:
+  //       _navigateToLatestIssuances(context);
+  //       break;
+
+  //     // Add conditions for other pages if needed
+  //   }
+  // }
 
   void _navigateToLatestIssuances(BuildContext context) {
     Navigator.of(context).push(

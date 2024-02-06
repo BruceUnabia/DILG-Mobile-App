@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../utils/routes.dart';
-import 'sidebar.dart';
 import 'details_screen.dart';
+import 'sidebar.dart';
 
 class LatestIssuances extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
     'ACCOUNTABLE, TRANSPARENT, PARTICIPATIVE, AND EFFECTIVE LOCAL GOVERNANCE',
     'PEACEFUL, ORDERLY AND SAFE LGUS STRATEGIC PRIORITIES',
     'SOCIALLY PROTECTIVE LGUS',
-    'ENVIRONMENT-PROTECTIVE, CLIMATE CHANGE ADAPTIVE AND DISASTER RESILIENT  LGUS',
+    'ENVIRONMENT-PROTECTIVE, CLIMATE CHANGE ADAPTIVE AND DISASTER RESILIENT LGUS',
     'BUSINESS-FRIENDLY AND COMPETITIVE LGUS',
     'STRENGTHENING OF INTERNAL GOVERNANCE',
   ];
@@ -41,7 +40,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
       ),
       body: _buildBody(),
       drawer: Sidebar(
-        currentIndex: 1,
+        currentIndex: 0,
         onItemSelected: (index) {
           _navigateToSelectedPage(context, index);
         },
@@ -57,7 +56,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
         children: [
           // Filter Category Dropdown
           Container(
-            margin: EdgeInsets.only(bottom: 8.0),
+            margin: EdgeInsets.only(bottom: 5.0),
             padding: EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -154,67 +153,80 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                   height: 2,
                 ),
                 for (int index = 0; index < 11; index++)
-                  InkWell(
-                    onTap: () {
-                      _navigateToDetailsPage(
-                        context,
-                        'Title $index is a very long title that might overflow and needs to be truncated',
-                        'content $index',
-                        '${index + 1}',
-                        '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
-                      );
-                    },
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.article,
-                                color: Colors.blue[
-                                    900]), // Replace with your desired icon
-                            SizedBox(width: 16.0),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          _navigateToDetailsPage(
+                            context,
+                            'Title $index is a very long title that might overflow and needs to be truncated',
+                            'content $index',
+                            '${index + 1}',
+                            '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 1.0),
+                            ),
+                          ),
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    'Card Title $index is a very long title that might overflow and needs to be truncated',
-                                    maxLines:
-                                        1, // Set the maximum number of lines
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                  Icon(Icons.article,
+                                      color: Colors.blue[
+                                          900]), // Replace with your desired icon
+                                  SizedBox(width: 16.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Card Title $index is a very long title that might overflow and needs to be truncated',
+                                          maxLines:
+                                              1, // Set the maximum number of lines
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            height:
+                                                4.0), // Adjust the spacing as needed
+                                        Text(
+                                          'Ref #${index + 1}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                      height:
-                                          4.0), // Adjust the spacing as needed
+                                  SizedBox(width: 16.0),
                                   Text(
-                                    'Ref #${index + 1}',
+                                    '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
                                     style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(width: 16.0),
-                            Text(
-                              '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
               ],
             ),
