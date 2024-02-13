@@ -168,14 +168,16 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.grey, width: 1.0),
+                              bottom: BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 237, 229, 229),
+                                  width: 1.0),
                             ),
                           ),
                           child: Card(
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(1),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'details_screen.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 class LibraryScreen extends StatefulWidget {
   @override
@@ -35,15 +36,42 @@ class _LibraryScreenState extends State<LibraryScreen> {
     'Legal Opinions',
   ];
 
+  // int _currentIndex = 1;
+  // List<String> _drawerMenuItems = [
+  //   'Home',
+  //   'Search',
+  //   'Library',
+  //   'View Profile',
+  // ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              AnimSearchBar(
+                width: 400,
+                onSubmitted: (query) {
+                  // Handle the submitted search query
+                  print('Search submitted: $query');
+                },
+                onSuffixTap: () {
+                  setState(() {
+                    _searchController.clear();
+                  });
+                },
+                color: Colors.blue[200]!,
+                helpText: "Search...",
+                autoFocus: true,
+                closeSearchOnSuffixTap: true,
+                animationDurationInMilli: 750,
+                rtl: true,
+                textController: _searchController,
+              ),
               _buildSearchAndFilterRow(),
               // Use a common method to build each section
               _buildSection('Latest Issuances', _latestIssuances),
@@ -57,6 +85,54 @@ class _LibraryScreenState extends State<LibraryScreen> {
           ),
         ),
       ),
+      // bottomNavigationBar: Container(
+      //   height: 80, // Set the desired height here
+      //   child: BottomNavigationBar(
+      //     currentIndex: _currentIndex,
+      //     onTap: (int index) {
+      //       setState(() {
+      //         _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+      //       });
+      //     },
+      //     items: const [
+      //       BottomNavigationBarItem(
+      //         backgroundColor: Color.fromARGB(255, 3, 80, 162),
+      //         icon: Icon(
+      //           Icons.home,
+      //           size: 25,
+      //           color: Colors.white,
+      //         ),
+      //         label: 'Home',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.search,
+      //           size: 25,
+      //           color: Colors.white,
+      //         ),
+      //         label: 'Search',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.library_books,
+      //           size: 25,
+      //           color: Colors.white,
+      //         ),
+      //         label: 'Library',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.people,
+      //           size: 25,
+      //           color: Colors.white,
+      //         ),
+      //         label: 'Profile',
+      //       ),
+      //     ],
+      //     selectedItemColor: Colors.white,
+      //     unselectedItemColor: Colors.white.withOpacity(0.5),
+      //   ),
+      // ),
     );
   }
 
@@ -64,54 +140,55 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget _buildSearchAndFilterRow() {
     return Row(
       children: [
-        DropdownButton<String>(
-          value: _selectedCategory,
-          onChanged: (String? newValue) {
-            setState(() {
-              _selectedCategory = newValue!;
-            });
-          },
-          items: _categories.map((String category) {
-            return DropdownMenuItem<String>(
-              value: category,
-              child: Text(
-                category,
-                style: TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-          style: TextStyle(color: Colors.black),
-          icon: Icon(Icons.arrow_drop_down),
-          iconSize: 24,
-          elevation: 16,
-          underline: Container(
-            height: 2,
-            color: Colors.blue[900],
-          ),
-        ),
-        SizedBox(width: 16),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                setState(() {
-                  // Handle search query changes here
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search',
-                border: InputBorder.none,
-                icon: Icon(Icons.search),
-              ),
-            ),
-          ),
-        ),
+        // DropdownButton<String>(
+        //   value: _selectedCategory,
+        //   onChanged: (String? newValue) {
+        //     setState(() {
+        //       _selectedCategory = newValue!;
+        //     });
+        //   },
+        //   items: _categories.map((String category) {
+        //     return DropdownMenuItem<String>(
+        //       value: category,
+        //       child: Text(
+        //         category,
+        //         style: TextStyle(color: Colors.black),
+        //       ),
+        //     );
+        //   }).toList(),
+        //   style: TextStyle(color: Colors.black),
+        //   icon: Icon(Icons.arrow_drop_down),
+        //   iconSize: 24,
+        //   elevation: 16,
+        //   underline: Container(
+        //     height: 2,
+        //     color: Colors.blue[900],
+        //   ),
+        // ),
+        // SizedBox(width: 16),
+
+        // Expanded(
+        //   child: Container(
+        //     padding: EdgeInsets.symmetric(horizontal: 16),
+        //     decoration: BoxDecoration(
+        //       color: Colors.grey[200],
+        //       borderRadius: BorderRadius.circular(10),
+        //     ),
+        //     child: TextField(
+        //       controller: _searchController,
+        //       onChanged: (value) {
+        //         setState(() {
+        //           // Handle search query changes here
+        //         });
+        //       },
+        //       decoration: InputDecoration(
+        //         hintText: 'Search',
+        //         border: InputBorder.none,
+        //         icon: Icon(Icons.search),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

@@ -9,7 +9,6 @@ import 'legal_opinions.dart';
 import 'home_screen.dart';
 import 'about_screen.dart';
 import 'developers_screen.dart';
-import 'edit_user.dart';
 
 class Sidebar extends StatelessWidget {
   final int currentIndex;
@@ -62,7 +61,7 @@ class Sidebar extends StatelessWidget {
             _buildSidebarItem(Icons.info, 'About', 8, context),
             _buildSidebarItem(Icons.people, 'Developers', 9, context),
             Divider(color: Colors.white),
-            _buildSidebarItem(Icons.person, 'View Profile', 10, context),
+            // _buildSidebarItem(Icons.person, 'View Profile', 10, context),
             _buildSidebarItem(Icons.exit_to_app, 'Logout', 11, context,
                 onPressed: () {
               Navigator.popUntil(
@@ -97,8 +96,6 @@ class Sidebar extends StatelessWidget {
         return About();
       case 9:
         return Developers();
-      case 10:
-        return EditUser();
       // Add cases for other items
       // ...
       default:
@@ -107,9 +104,14 @@ class Sidebar extends StatelessWidget {
   }
 
   void _navigateToPage(BuildContext context, Widget page) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
-    onItemSelected(
-        0); // Reset the selected index to home when navigating to a new page
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => page))
+        .then((value) {
+      onItemSelected(
+          0); // Reset the selected index to home when navigating to a new page
+      Navigator.of(context)
+          .pop(); // Close the sidebar after navigation is complete
+    });
   }
 
   Widget _buildSidebarItem(

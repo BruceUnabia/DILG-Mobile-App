@@ -24,22 +24,22 @@ class _EditUserState extends State<EditUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'View Profile',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        backgroundColor: Colors.blue[900],
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'View Profile',
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.bold,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      //   leading: Builder(
+      //     builder: (context) => IconButton(
+      //       icon: Icon(Icons.menu, color: Colors.white),
+      //       onPressed: () => Scaffold.of(context).openDrawer(),
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.blue[900],
+      // ),
       drawer: Sidebar(
         currentIndex: 1,
         onItemSelected: (index) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../utils/routes.dart';
-import '../screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,12 +17,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      initialRoute: Routes.introsection,
+      initialRoute: Routes.login,
       routes: Routes.getRoutes(context),
-      onGenerateRoute: (settings) {
-        // Handle unknown routes, such as pressing the back button
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
-      },
+      // onGenerateRoute: (settings) {
+      //   // Handle unknown routes, such as pressing the back button
+      //   return MaterialPageRoute(builder: (context) => const HomeScreen());
+      // },
     );
   }
 }

@@ -26,7 +26,7 @@ class Routes {
   static const String republicActs = '/republic-acts';
   static const String legalOpinions = '/legal-opinions';
   static const String login = '/login';
-  static const String editUser = 'edit_user';
+  static const String editUser = '/edit_user';
 
   static Map<String, WidgetBuilder> getRoutes(BuildContext context) {
     return {
@@ -41,7 +41,7 @@ class Routes {
       draftIssuances: (context) => DraftIssuances(),
       republicActs: (context) => RepublicActs(),
       legalOpinions: (context) => LegalOpinions(),
-      login: (context) => LoginScreen(
+      login: (context) => const LoginScreen(
             title: 'login',
           ),
       editUser: (context) => EditUser(),
