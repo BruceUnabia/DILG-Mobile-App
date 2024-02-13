@@ -8,7 +8,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
-  List<String> _recentSearches = [];
+  List<String> _recentSearches = [""];
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     _searchController.clear();
                   });
                 },
-                color: Colors.blue[200]!,
+                color: Colors.blue[400]!,
                 helpText: "Search...",
                 autoFocus: true,
                 closeSearchOnSuffixTap: true,

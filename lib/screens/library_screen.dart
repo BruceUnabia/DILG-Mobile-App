@@ -64,7 +64,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     _searchController.clear();
                   });
                 },
-                color: Colors.blue[200]!,
+                color: Colors.blue[400]!,
                 helpText: "Search...",
                 autoFocus: true,
                 closeSearchOnSuffixTap: true,
