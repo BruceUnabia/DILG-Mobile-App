@@ -82,7 +82,6 @@ class _LatestIssuancesState extends State<LatestIssuances> {
         children: [
           // Filter Category Dropdown
           Container(
-            margin: EdgeInsets.only(bottom: 5.0),
             padding: EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -94,9 +93,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8.0),
                 Container(
-                  margin: EdgeInsets.only(top: 0.1, bottom: 0.1),
                   padding: EdgeInsets.symmetric(horizontal: 1.0),
                   child: DropdownButton<String>(
                     value: selectedCategory,
@@ -138,7 +135,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
 
           // Search Input
           AnimSearchBar(
-            width: 400,
+            width: 300,
             onSubmitted: (query) {
               print('Search submitted: $query');
             },
@@ -151,7 +148,7 @@ class _LatestIssuancesState extends State<LatestIssuances> {
             helpText: "Search...",
             autoFocus: true,
             closeSearchOnSuffixTap: true,
-            animationDurationInMilli: 1000,
+            animationDurationInMilli: 1200,
             rtl: true,
             textController: _searchController,
           ),
@@ -169,7 +166,6 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5.0),
                 Divider(
                   color: Colors.grey,
                   thickness: 2,
@@ -189,14 +185,6 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                           );
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  color:
-                                      const Color.fromARGB(255, 237, 229, 229),
-                                  width: 1.0),
-                            ),
-                          ),
                           child: Card(
                             elevation: 0,
                             shape: RoundedRectangleBorder(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+// import '../main.dart';
 import 'sidebar.dart';
-
 import 'bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -69,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Only show AppBar for HomeScreen
         body: _buildBody(),
         drawer: Sidebar(
-          currentIndex: _currentIndex,
+          currentIndex: 0,
           onItemSelected: (index) {
             setState(() {
               _navigateToSelectedPage(context, index);

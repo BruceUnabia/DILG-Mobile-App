@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
-import 'bottom_navigation.dart'; // Import your BottomNavigation widget here
+import 'bottom_navigation.dart';
+import 'package:anim_search_bar/anim_search_bar.dart';
 
 class JointCirculars extends StatefulWidget {
   @override
@@ -9,13 +10,7 @@ class JointCirculars extends StatefulWidget {
 }
 
 class _JointCircularsState extends State<JointCirculars> {
-  List<String> categories = [
-    '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    '2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    '3: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  ];
-  String selectedCategory =
-      '1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.'; // Default selection
+  TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +33,31 @@ class _JointCircularsState extends State<JointCirculars> {
             ),
             backgroundColor: Colors.blue[900],
           ),
-          body: _buildBody(),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                AnimSearchBar(
+                  width: 300,
+                  onSubmitted: (query) {
+                    print('Search submitted: $query');
+                  },
+                  onSuffixTap: () {
+                    setState(() {
+                      _searchController.clear();
+                    });
+                  },
+                  color: Colors.blue[400]!,
+                  helpText: "Search...",
+                  autoFocus: true,
+                  closeSearchOnSuffixTap: true,
+                  animationDurationInMilli: 1000,
+                  rtl: true,
+                  textController: _searchController,
+                ),
+                _buildTable(),
+              ],
+            ),
+          ),
           drawer: Sidebar(
             currentIndex: 2,
             onItemSelected: (index) {
@@ -48,9 +67,7 @@ class _JointCircularsState extends State<JointCirculars> {
           bottomNavigationBar: BottomNavigation(
             currentIndex: 0,
             onTabTapped: (index) {
-              setState(() {
-                // _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
-              });
+              setState(() {});
             },
           ),
         ),
@@ -58,173 +75,94 @@ class _JointCircularsState extends State<JointCirculars> {
     );
   }
 
-  Widget _buildBody() {
-    TextEditingController searchController = TextEditingController();
-
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          // Search Input
-          Container(
-            margin: EdgeInsets.only(bottom: 8.0),
-            padding: EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[400]!),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                border: InputBorder.none,
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (value) {
-                // Handle search input changes
-              },
-            ),
-          ),
-
-          // Category Dropdown
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Title/Subject: ',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey[400]!),
-                  ),
-                  padding: EdgeInsets.all(12.0),
-                  child: DropdownButton<String>(
-                    value: selectedCategory,
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedCategory = newValue;
-                        });
-                      }
-                    },
-                    items: categories
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                          value: value,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  value,
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                          ));
-                    }).toList(),
-                  ),
-                ),
-                Text(
-                  'Latest',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 5.0),
-                Divider(
-                  color: Colors.grey,
-                  thickness: 2,
-                  height: 2,
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 16.0),
-
-          // List of Cards (Updated design)
-          _buildCard(0),
-          _buildCard(1),
-          _buildCard(2),
-          // Add more cards as needed
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCard(int index) {
-    return InkWell(
-      onTap: () {
-        _navigateToDetailsPage(
-          context,
-          'Card Title $index is a very long title that might overflow and needs to be truncated',
-          'content $index',
-          '${index + 1}',
-          '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
-        );
-      },
-      child: Card(
-        child: Container(
-          margin: EdgeInsets.only(bottom: 16.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Icon(Icons.article, color: Colors.blue[900]),
-                  SizedBox(width: 16.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Card Title $index is a very long title that might overflow and needs to be truncated',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(height: 4.0),
-                        Text(
-                          'Ref #${index + 1}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 16.0),
-                  Text(
-                    '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+  Widget _buildTable() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text(
+            'Recent Circulars',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
-      ),
+        Divider(
+          color: Colors.grey,
+          thickness: 2,
+          height: 2,
+        ),
+        for (int index = 0; index < 11; index++)
+          InkWell(
+            onTap: () {
+              _navigateToDetailsPage(
+                context,
+                'Title $index is a very long title that might overflow and needs to be truncated',
+                'content $index',
+                '${index + 1}',
+                '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: const Color.fromARGB(255, 237, 229, 229),
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              child: Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.article, color: Colors.blue[900]),
+                      SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Card Title $index is a very long title that might overflow and needs to be truncated',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 4.0),
+                            Text(
+                              'Ref #${index + 1}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 16.0),
+                      Text(
+                        '${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'home_screen.dart';
 import 'search_screen.dart';
 import 'library_screen.dart';
@@ -61,6 +62,19 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
       ],
       backgroundColor: Colors.blue[900],
+    );
+  }
+
+  void navigateToSelectedPage(BuildContext context, int index) {
+    Widget page = _pages[index];
+
+    Navigator.pushReplacement(
+      context,
+      PageTransition(
+        child: page,
+        type: PageTransitionType.fade, // or choose your transition type
+        duration: Duration(milliseconds: 500),
+      ),
     );
   }
 }
