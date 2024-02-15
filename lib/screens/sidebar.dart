@@ -77,7 +77,7 @@ class Sidebar extends StatelessWidget {
   Widget _getPageByIndex(int index) {
     switch (index) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
         return LatestIssuances();
       case 2:

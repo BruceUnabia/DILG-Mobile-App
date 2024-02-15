@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
+import 'sidebar.dart';
+import 'bottom_navigation.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -8,63 +9,90 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
-  List<String> _recentSearches = [""];
+  List<String> _recentSearches = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AnimSearchBar(
-                width: 400,
-                onSubmitted: (query) {
-                  // Handle the submitted search query
-                  print('Search submitted: $query');
-                },
-                onSuffixTap: () {
-                  setState(() {
-                    _searchController.clear();
-                  });
-                },
-                color: Colors.blue[400]!,
-                helpText: "Search...",
-                autoFocus: true,
-                closeSearchOnSuffixTap: true,
-                animationDurationInMilli: 750,
-                rtl: true,
-                textController: _searchController,
-              ),
-              _buildRecentSearchesContainer(),
-            ],
+      appBar: AppBar(
+        title: Text(
+          'Search',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+        backgroundColor: Colors.blue[900],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildSearchInput(),
+            SizedBox(height: 16),
+            _buildRecentSearchesContainer(),
+          ],
+        ),
+      ),
+      drawer: Sidebar(
+        currentIndex: 0,
+        onItemSelected: (index) {
+          _navigateToSelectedPage(context, index);
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 1, // Set the current index accordingly
+        onTabTapped: (index) {
+          // Handle navigation if needed
+        },
       ),
     );
   }
 
   // Method to build the search input with rounded border
-  // Widget _buildSearchInput() {
-  //   return Container(
-  //     padding: EdgeInsets.symmetric(horizontal: 16),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(10),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.grey.withOpacity(0.5),
-  //           spreadRadius: 1,
-  //           blurRadius: 3,
-  //           offset: Offset(0, 2),
-  //         ),
-  //       ],
-  //     ),
-
-  //   );
-  // }
+  Widget _buildSearchInput() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search',
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              _handleSearch();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   // Method to build the recent searches container or card
   Widget _buildRecentSearchesContainer() {
@@ -145,5 +173,9 @@ class _SearchScreenState extends State<SearchScreen> {
       _recentSearches.remove(value);
       _recentSearches.insert(0, value);
     });
+  }
+
+  void _navigateToSelectedPage(BuildContext context, int index) {
+    // Handle navigation if needed
   }
 }

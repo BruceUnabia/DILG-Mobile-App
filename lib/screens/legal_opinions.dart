@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart';
 import 'package:http/http.dart' as http;
 
 class LegalOpinions extends StatefulWidget {
@@ -74,6 +75,15 @@ class _LegalOpinionsState extends State<LegalOpinions> {
         onItemSelected: (index) {
           // Handle item selection if needed
           Navigator.pop(context); // Close the drawer after handling selection
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 0,
+        onTabTapped: (index) {
+          setState(() {
+            // _currentIndex = index;
+          });
+          // Handle navigation or other actions here
         },
       ),
     );

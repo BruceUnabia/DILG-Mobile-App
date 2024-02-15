@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart'; // Import your BottomNavigation widget here
 
 class MemoCirculars extends StatefulWidget {
   @override
@@ -18,31 +19,44 @@ class _MemoCircularsState extends State<MemoCirculars> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Memo Circulars',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Memo Circulars',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.menu, color: Colors.white),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            ),
+            backgroundColor: Colors.blue[900],
+          ),
+          body: _buildBody(),
+          drawer: Sidebar(
+            currentIndex: 3, // Adjust the index based on your sidebar menu
+            onItemSelected: (index) {
+              // Handle item selection if needed
+              Navigator.pop(
+                  context); // Close the drawer after handling selection
+            },
+          ),
+          bottomNavigationBar: BottomNavigation(
+            currentIndex: 0,
+            onTabTapped: (index) {
+              setState(() {
+                // _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+              });
+            },
           ),
         ),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: _buildBody(),
-      drawer: Sidebar(
-        currentIndex: 3, // Adjust the index based on your sidebar menu
-        onItemSelected: (index) {
-          // Handle item selection if needed
-          Navigator.pop(context); // Close the drawer after handling selection
-        },
-      ),
+      ],
     );
   }
 

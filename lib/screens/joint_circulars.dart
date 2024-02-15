@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart'; // Import your BottomNavigation widget here
 
 class JointCirculars extends StatefulWidget {
   @override
@@ -18,30 +19,42 @@ class _JointCircularsState extends State<JointCirculars> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Joint Circulars',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Joint Circulars',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.menu, color: Colors.white),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+            ),
+            backgroundColor: Colors.blue[900],
+          ),
+          body: _buildBody(),
+          drawer: Sidebar(
+            currentIndex: 2,
+            onItemSelected: (index) {
+              Navigator.pop(context);
+            },
+          ),
+          bottomNavigationBar: BottomNavigation(
+            currentIndex: 0,
+            onTabTapped: (index) {
+              setState(() {
+                // _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+              });
+            },
           ),
         ),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: _buildBody(),
-      drawer: Sidebar(
-        currentIndex: 2,
-        onItemSelected: (index) {
-          Navigator.pop(context);
-        },
-      ),
+      ],
     );
   }
 

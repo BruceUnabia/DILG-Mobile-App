@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'search_screen.dart';
-import 'library_screen.dart';
+
 import 'sidebar.dart';
-import 'latest_issuances.dart';
-import 'edit_user.dart';
-import 'bottom_navigation.dart'; // Import the BottomNavigation widget
+
+import 'bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,12 +13,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  List<String> _drawerMenuItems = [
-    'Home',
-    'Search',
-    'Library',
-    'View Profile',
-  ];
+  // List<String> _drawerMenuItems = [
+  //   'Home',
+  //   'Search',
+  //   'Library',
+  //   'View Profile',
+  // ];
 
   DateTime? currentBackPressTime;
 
@@ -36,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (currentBackPressTime == null ||
             DateTime.now().difference(currentBackPressTime!) >
                 Duration(seconds: 2)) {
-          // Show a toast or snackbar indicating to press back again to exit
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Press back again to exit'),
@@ -44,44 +41,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
           currentBackPressTime = DateTime.now();
-          return false; // Do not exit
+          return false;
         } else {
-          return true; // Exit the app
+          return true;
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _drawerMenuItems[
-                _currentIndex.clamp(0, _drawerMenuItems.length - 1)],
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          leading: _currentIndex == 0
-              ? Builder(
+        appBar: _currentIndex == 0
+            ? AppBar(
+                title: Text(
+                  'Home',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                leading: Builder(
                   builder: (context) => IconButton(
-                    icon: Icon(Icons.menu, color: Colors.blue[900]),
+                    icon: Icon(Icons.menu, color: Colors.white),
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
-                )
-              : null,
-          automaticallyImplyLeading: true,
-        ),
+                ),
+                automaticallyImplyLeading: true,
+                backgroundColor: Colors.blue[900],
+              )
+            : null,
+        // Only show AppBar for HomeScreen
         body: _buildBody(),
         drawer: Sidebar(
           currentIndex: _currentIndex,
           onItemSelected: (index) {
             setState(() {
-              _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+              _navigateToSelectedPage(context, index);
             });
           },
         ),
         bottomNavigationBar: BottomNavigation(
-          currentIndex: _currentIndex,
+          currentIndex: 0,
           onTabTapped: (index) {
             setState(() {
-              _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+              // _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
             });
           },
         ),
@@ -96,11 +95,23 @@ class _HomeScreenState extends State<HomeScreen> {
         return ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-            // Recently Opened Issuances
+            Center(
+              child: Image.asset(
+                'assets/dilg-main.png',
+                width: 200.0,
+                height: 200.0,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Divider(
+              color: Colors.grey,
+              thickness: 2,
+              height: 2,
+            ),
             const Text(
               'Recently Opened Issuances',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 23,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -118,17 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 16.0),
-            // Recently Downloaded Issuances
           ],
         );
-      case 1:
-        // Search Screen
-        return SearchScreen();
-      case 2:
-        // Library Screen
-        return LibraryScreen();
-      case 3:
-        return EditUser();
       default:
         return Container();
     }
@@ -146,13 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
       {'title': 'Issuance 8', 'subtitle': 'Subtitle for Issuance 8'},
       {'title': 'Issuance 9', 'subtitle': 'Subtitle for Issuance 9'},
       {'title': 'Issuance 10', 'subtitle': 'Subtitle for Issuance 10'},
-      // Add more issuances as needed
     ];
 
     return Column(
-      children: recentIssuances
-          .take(10) // Display a maximum of 10 recent issuances
-          .map((issuance) {
+      children: recentIssuances.take(10).map((issuance) {
         return Column(
           children: [
             ListTile(
@@ -171,28 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }).toList(),
     );
   }
-
-  // Widget _buildRecentlyDownloadedIssuances() {
-  //   return SizedBox(
-  //     height: 300.0,
-  //     child: ListView.builder(
-  //       itemCount: 1,
-  //       itemBuilder: (context, index) {
-  //         return const Card(
-  //           child: ListTile(
-  //             title: Text('Issuance 1'),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-  void _navigateToLatestIssuances(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => LatestIssuances(),
-      ),
-    );
-  }
 }
+
+void _navigateToSelectedPage(BuildContext context, int index) {}

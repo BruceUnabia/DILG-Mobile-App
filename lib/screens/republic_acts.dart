@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart';
 
 class RepublicActs extends StatefulWidget {
   @override
@@ -36,6 +37,15 @@ class _RepublicActsState extends State<RepublicActs> {
         onItemSelected: (index) {
           // Handle item selection if needed
           Navigator.pop(context); // Close the drawer after handling selection
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 0,
+        onTabTapped: (index) {
+          setState(() {
+            // _currentIndex = index;
+          });
+          // Handle navigation or other actions here
         },
       ),
     );

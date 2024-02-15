@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart';
 
 class DraftIssuances extends StatefulWidget {
   @override
@@ -41,6 +42,15 @@ class _DraftIssuancesState extends State<DraftIssuances> {
         onItemSelected: (index) {
           // Handle item selection if needed
           Navigator.pop(context); // Close the drawer after handling selection
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 0,
+        onTabTapped: (index) {
+          setState(() {
+            // _currentIndex = index;
+          });
+          // Handle navigation or other actions here
         },
       ),
     );

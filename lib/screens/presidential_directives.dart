@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'details_screen.dart';
+import 'bottom_navigation.dart';
 
 class PresidentialDirectives extends StatefulWidget {
   @override
@@ -41,6 +42,12 @@ class _PresidentialDirectivesState extends State<PresidentialDirectives> {
         onItemSelected: (index) {
           // Handle item selection if needed
           Navigator.pop(context); // Close the drawer after handling selection
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 0, // Set the current index accordingly
+        onTabTapped: (index) {
+          // Handle navigation if needed
         },
       ),
     );
