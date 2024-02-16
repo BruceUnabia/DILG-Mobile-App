@@ -138,7 +138,7 @@ class _EditUserState extends State<EditUser> {
                                           context); // Close the dialog
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.blue[300],
+                                      backgroundColor: Colors.blue[300],
                                     ),
                                     child: Text('OK'),
                                   ),
@@ -150,7 +150,7 @@ class _EditUserState extends State<EditUser> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue[900],
+                      backgroundColor: Colors.blue[900],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

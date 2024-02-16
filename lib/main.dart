@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/routes.dart';
 import '../screens/home_screen.dart';
-import '../screens/search_screen.dart';
-import '../screens/library_screen.dart';
-import '../screens/edit_user.dart';
+import '../screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,48 +19,42 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      initialRoute: Routes.login,
-      routes: Routes.getRoutes(context),
-      // onGenerateRoute: (settings) {
-      //   // Handle unknown routes, such as pressing the back button
-      //   return MaterialPageRoute(builder: (context) => const HomeScreen());
-      // },
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginScreen(title: 'Login'),
+        '/home': (context) => HomeScreen(),
+        // Add other routes as needed
+      },
     );
   }
 }
 
-class BottomNavigationWidget extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onTabTapped;
+// import 'package:flutter/material.dart';
+// import '../utils/routes.dart';
+// import '../screens/home_screen.dart';
 
-  BottomNavigationWidget({
-    required this.currentIndex,
-    required this.onTabTapped,
-  });
+// void main() {
+//   runApp(const MyApp());
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTabTapped,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.library_books),
-          label: 'Library',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.edit),
-          label: 'Edit User',
-        ),
-      ],
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+//         useMaterial3: true,
+//       ),
+//       initialRoute: Routes.introsection, // Set the initial route
+//       routes: Routes.getRoutes(context),
+//       onGenerateRoute: (settings) {
+//         // Handle unknown routes, such as pressing the back button
+//         return MaterialPageRoute(builder: (context) => const HomeScreen());
+//       },
+//     );
+//   }
+// }

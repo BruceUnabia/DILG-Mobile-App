@@ -14,7 +14,7 @@ import '../screens/login_screen.dart';
 import '../screens/edit_user.dart';
 
 class Routes {
-  static const String home = '/';
+  static const String home = '/home';
   static const String search = '/search';
   static const String library = '/library';
   static const String introsection = '/introsection';
@@ -30,7 +30,7 @@ class Routes {
 
   static Map<String, WidgetBuilder> getRoutes(BuildContext context) {
     return {
-      home: (context) => const HomeScreen(),
+      home: (context) => HomeScreen(),
       search: (context) => SearchScreen(),
       library: (context) => LibraryScreen(),
       introsection: (context) => IntroSection(),

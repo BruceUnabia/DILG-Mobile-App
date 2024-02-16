@@ -34,7 +34,7 @@ dependencies:
   sqflite: ^2.3.0
   path: ^1.8.3
   path_provider: ^2.1.2
-  intl: ^0.17.0
+  intl: ^0.19.0
   url_launcher: ^6.2.4
   # webview_flutter: ^3.0.0
   # flutter_pdfview: ^1.0.2
@@ -82,6 +82,12 @@ flutter:
     - assets/bruce.png
     - assets/mdc-logo.png
     - assets/profile.png
+    - assets/amu1.png
+    - assets/amu2.png
+    - assets/amu3.png
+    - assets/amu4.png
+    - assets/amu5.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

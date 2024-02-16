@@ -131,17 +131,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               bool loginSuccessful = true;
 
                               if (loginSuccessful) {
-                                Navigator.push(
+                                // Clear navigation stack and go to HomeScreen
+                                Navigator.pushNamedAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(),
-                                  ),
+                                  '/home', // Replace with the actual route name for your HomeScreen
+                                  (route) => false,
                                 );
                               }
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
+                            backgroundColor: Colors.blue,
                           ),
                           child: Text('Login'),
                         ),

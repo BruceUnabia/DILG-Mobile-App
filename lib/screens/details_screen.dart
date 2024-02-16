@@ -93,8 +93,8 @@ class DetailsScreen extends StatelessWidget {
                       // Make sure to implement the logic for downloading PDF
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // Background color
-                      onPrimary: Colors.white, // Text color
+                      backgroundColor: Colors.red, // Background color
+                      disabledBackgroundColor: Colors.white, // Text color
                       padding: EdgeInsets.symmetric(
                           horizontal: 20), // Horizontal padding
                     ),

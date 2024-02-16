@@ -1,3 +1,4 @@
+import 'login_screen.dart';
 import 'package:flutter/material.dart';
 import 'latest_issuances.dart';
 import 'joint_circulars.dart';
@@ -62,7 +63,7 @@ class Sidebar extends StatelessWidget {
             _buildSidebarItem(Icons.people, 'Developers', 9, context),
             Divider(color: Colors.white),
             // _buildSidebarItem(Icons.person, 'View Profile', 10, context),
-            _buildSidebarItem(Icons.exit_to_app, 'Logout', 11, context,
+            _buildSidebarItem(Icons.exit_to_app, 'Logout', 10, context,
                 onPressed: () {
               Navigator.popUntil(
                   context, (route) => route.isFirst); // Pop until root
@@ -77,7 +78,7 @@ class Sidebar extends StatelessWidget {
   Widget _getPageByIndex(int index) {
     switch (index) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
         return LatestIssuances();
       case 2:
@@ -96,6 +97,8 @@ class Sidebar extends StatelessWidget {
         return About();
       case 9:
         return Developers();
+      case 10:
+        return LoginScreen(title: 'Logout');
       // Add cases for other items
       // ...
       default:
@@ -105,12 +108,13 @@ class Sidebar extends StatelessWidget {
 
   void _navigateToPage(BuildContext context, Widget page) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => page))
+        .pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => page),
+      (Route<dynamic> route) => false,
+    )
         .then((value) {
       onItemSelected(
           0); // Reset the selected index to home when navigating to a new page
-      Navigator.of(context)
-          .pop(); // Close the sidebar after navigation is complete
     });
   }
 

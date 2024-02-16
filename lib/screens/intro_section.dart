@@ -40,7 +40,7 @@ class IntroSection extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, // Dark blue color
+                  backgroundColor: Colors.blue, // Dark blue color
                 ),
                 child: Text('GET STARTED'),
               ),

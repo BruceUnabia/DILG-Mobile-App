@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-// import '../main.dart';
 import 'sidebar.dart';
 import 'bottom_navigation.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,28 +11,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-  // List<String> _drawerMenuItems = [
-  //   'Home',
-  //   'Search',
-  //   'Library',
-  //   'View Profile',
-  // ];
-
   DateTime? currentBackPressTime;
+  late PageController _pageController;
+  late Timer _timer;
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.8);
+    _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
+      if (_currentPage < 4) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel(); // Dispose the timer to avoid memory leaks
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_currentIndex != 0) {
-          setState(() {
-            _currentIndex = 0;
-          });
-          return false;
-        } else if (currentBackPressTime == null ||
+        if (currentBackPressTime == null ||
             DateTime.now().difference(currentBackPressTime!) >
-                Duration(seconds: 2)) {
+                Duration(seconds: 1)) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Press back again to exit'),
@@ -46,72 +61,99 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Scaffold(
-        appBar: _currentIndex == 0
-            ? AppBar(
-                title: Text(
-                  'Home',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                leading: Builder(
-                  builder: (context) => IconButton(
-                    icon: Icon(Icons.menu, color: Colors.white),
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                  ),
-                ),
-                automaticallyImplyLeading: true,
-                backgroundColor: Colors.blue[900],
-              )
-            : null,
-        // Only show AppBar for HomeScreen
+        appBar: AppBar(
+          title: Text(
+            'Home',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.white),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+          ),
+          automaticallyImplyLeading: true,
+          backgroundColor: Colors.blue[900],
+        ),
         body: _buildBody(),
         drawer: Sidebar(
-          currentIndex: 0,
           onItemSelected: (index) {
             setState(() {
               _navigateToSelectedPage(context, index);
             });
           },
+          currentIndex: 0,
         ),
         bottomNavigationBar: BottomNavigation(
-          currentIndex: 0,
           onTabTapped: (index) {
             setState(() {
-              // _currentIndex = index.clamp(0, _drawerMenuItems.length - 1);
+              // Handle bottom navigation item taps if needed
             });
           },
+          currentIndex: 0,
         ),
       ),
     );
   }
 
   Widget _buildBody() {
-    switch (_currentIndex) {
-      case 0:
-        // Home Screen
-        return ListView(
-          padding: const EdgeInsets.all(16.0),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           children: [
-            Center(
-              child: Image.asset(
-                'assets/dilg-main.png',
-                width: 200.0,
-                height: 200.0,
-              ),
+            Row(
+              children: [
+                Image.asset(
+                  'assets/dilg-main.png',
+                  width: 60.0,
+                  height: 60.0,
+                ),
+                const SizedBox(width: 10.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'REPUBLIC OF THE PHILIPPINES',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                    Text(
+                      'DEPARTMENT OF THE INTERIOR AND LOCAL GOVERNMENT',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 9,
+                      ),
+                    ),
+                    Text(
+                      'BOHOL PROVINCE',
+                      style: TextStyle(
+                        fontSize: 8,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(height: 16.0),
-            Divider(
-              color: Colors.grey,
-              thickness: 2,
-              height: 2,
+            const SizedBox(height: 15.0),
+            SizedBox(
+              height: 250.0, // Adjust the height as needed
+              child: _buildHorizontalScrollableCards(),
             ),
-            const Text(
-              'Recently Opened Issuances',
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Recently Opened Issuances',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Container(
@@ -129,10 +171,122 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16.0),
           ],
-        );
-      default:
-        return Container();
-    }
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHorizontalScrollableCards() {
+    return Container(
+      height: 100.0,
+      child: PageView.builder(
+        controller: _pageController,
+        scrollDirection: Axis.horizontal,
+        itemCount: 6, // Change the itemCount to 6 for 6 cards
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return _buildCard('assets/amu1.png', 'Card Title 0', index);
+          } else if (index == 1) {
+            return _buildCard('assets/amu2.png', 'Card Title 1', index);
+          } else if (index == 2) {
+            return _buildCard('assets/amu3.png', 'Card Title 2', index);
+          } else if (index == 3) {
+            return _buildCard('assets/amu4.png', 'Card Title 3', index);
+          } else if (index == 4) {
+            return _buildCard('assets/amu5.png', 'Card Title 4', index);
+          } else if (index == 5) {
+            // Display "See More" container for index 5
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 6.0),
+              child: Card(
+                elevation: 5.0,
+                child: InkWell(
+                  onTap: () {
+                    // Handle "See More" click
+                    print('See More clicked');
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'See More',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward,
+                        size: 20.0,
+                        color: Colors.blue, // You can customize the color
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {}
+        },
+      ),
+    );
+  }
+
+  Widget _buildCard(String imagePath, String title, int index) {
+    return GestureDetector(
+      onTap: () {
+        // Handle card click
+        print('Card $index clicked');
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: Card(
+          elevation: 5.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image container
+              Container(
+                height: 115.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // Title container
+              Container(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+              // Content container
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                  style: TextStyle(fontSize: 12.0),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              // Date container
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Date: ${DateTime.now().toString()}',
+                  style: TextStyle(fontSize: 10.0),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildRecentIssuances() {
@@ -169,6 +323,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }).toList(),
     );
   }
-}
 
-void _navigateToSelectedPage(BuildContext context, int index) {}
+  void _navigateToSelectedPage(BuildContext context, int index) {
+    // Handle navigation to selected page
+  }
+}
