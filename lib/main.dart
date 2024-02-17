@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const HomeScreen(),
       },
+      initialRoute: '/login',
     );
   }
 }
@@ -38,8 +39,10 @@ class MyAppWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           bool isAuthenticated = snapshot.data ?? false;
           if (isAuthenticated) {
+            // If authenticated, navigate to the home screen
             return const HomeScreen();
           } else {
+            // If not authenticated, navigate to the login screen
             return LoginScreen(
               onLogin: () {
                 // Triggered when the user successfully logs in
@@ -48,7 +51,8 @@ class MyAppWrapper extends StatelessWidget {
             );
           }
         } else {
-          return const HomeScreen();
+          // Loading state, show nothing or a loading indicator
+          return const SizedBox.shrink();
         }
       },
     );
