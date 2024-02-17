@@ -9,7 +9,7 @@ import '../screens/republic_acts.dart';
 import '../screens/home_screen.dart';
 import '../screens/search_screen.dart';
 import '../screens/library_screen.dart';
-import '../screens/intro_section.dart';
+// import '../screens/intro_section.dart';
 import '../screens/login_screen.dart';
 import '../screens/edit_user.dart';
 
@@ -17,7 +17,7 @@ class Routes {
   static const String home = '/home';
   static const String search = '/search';
   static const String library = '/library';
-  static const String introsection = '/introsection';
+  // static const String introsection = '/introsection';
   static const String latestIssuances = '/latest-issuances';
   static const String jointCirculars = '/joint-circulars';
   static const String memoCirculars = '/memo-circulars';
@@ -33,7 +33,7 @@ class Routes {
       home: (context) => HomeScreen(),
       search: (context) => SearchScreen(),
       library: (context) => LibraryScreen(),
-      introsection: (context) => IntroSection(),
+      // introsection: (context) => IntroSection(),
       latestIssuances: (context) => LatestIssuances(),
       jointCirculars: (context) => JointCirculars(),
       memoCirculars: (context) => MemoCirculars(),
@@ -41,8 +41,12 @@ class Routes {
       draftIssuances: (context) => DraftIssuances(),
       republicActs: (context) => RepublicActs(),
       legalOpinions: (context) => LegalOpinions(),
-      login: (context) => const LoginScreen(
-            title: 'login',
+      login: (context) => LoginScreen(
+            onLogin: () {
+              Navigator.pop(context); // Close the sidebar
+              Navigator.pushReplacementNamed(
+                  context, '/home'); // Navigate to the home screen
+            },
           ),
       editUser: (context) => EditUser(),
     };

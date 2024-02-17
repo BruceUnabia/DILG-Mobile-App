@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../utils/routes.dart';
-import '../screens/home_screen.dart';
-import '../screens/login_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,42 +19,50 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      home: const MyAppWrapper(),
       routes: {
-        '/login': (context) => LoginScreen(title: 'Login'),
-        '/home': (context) => HomeScreen(),
-        // Add other routes as needed
+        '/home': (context) => const HomeScreen(),
       },
     );
   }
 }
 
-// import 'package:flutter/material.dart';
-// import '../utils/routes.dart';
-// import '../screens/home_screen.dart';
+class MyAppWrapper extends StatelessWidget {
+  const MyAppWrapper({Key? key});
 
-// void main() {
-//   runApp(const MyApp());
-// }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _checkAuthenticationState(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          bool isAuthenticated = snapshot.data ?? false;
+          if (isAuthenticated) {
+            return const HomeScreen();
+          } else {
+            return LoginScreen(
+              onLogin: () {
+                // Triggered when the user successfully logs in
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+            );
+          }
+        } else {
+          return const HomeScreen();
+        }
+      },
+    );
+  }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key});
+  Future<bool> _checkAuthenticationState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-//         useMaterial3: true,
-//       ),
-//       initialRoute: Routes.introsection, // Set the initial route
-//       routes: Routes.getRoutes(context),
-//       onGenerateRoute: (settings) {
-//         // Handle unknown routes, such as pressing the back button
-//         return MaterialPageRoute(builder: (context) => const HomeScreen());
-//       },
-//     );
-//   }
-// }
+    // If the app is not authenticated, clear the saved authentication state
+    if (!isAuthenticated) {
+      prefs.remove('isAuthenticated');
+    }
+
+    return isAuthenticated;
+  }
+}

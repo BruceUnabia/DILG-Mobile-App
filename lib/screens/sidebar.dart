@@ -1,5 +1,5 @@
-import 'login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'latest_issuances.dart';
 import 'joint_circulars.dart';
 import 'memo_circulars.dart';
@@ -10,6 +10,7 @@ import 'legal_opinions.dart';
 import 'home_screen.dart';
 import 'about_screen.dart';
 import 'developers_screen.dart';
+import 'login_screen.dart';
 
 class Sidebar extends StatelessWidget {
   final int currentIndex;
@@ -62,20 +63,14 @@ class Sidebar extends StatelessWidget {
             _buildSidebarItem(Icons.info, 'About', 8, context),
             _buildSidebarItem(Icons.people, 'Developers', 9, context),
             Divider(color: Colors.white),
-            // _buildSidebarItem(Icons.person, 'View Profile', 10, context),
-            _buildSidebarItem(Icons.exit_to_app, 'Logout', 10, context,
-                onPressed: () {
-              Navigator.popUntil(
-                  context, (route) => route.isFirst); // Pop until root
-              Navigator.pushReplacementNamed(context, '/login');
-            }),
+            _buildSidebarItem(Icons.exit_to_app, 'Logout', 10, context),
           ],
         ),
       ),
     );
   }
 
-  Widget _getPageByIndex(int index) {
+  Widget _getPageByIndex(int index, {BuildContext? context}) {
     switch (index) {
       case 0:
         return const HomeScreen();
@@ -98,11 +93,15 @@ class Sidebar extends StatelessWidget {
       case 9:
         return Developers();
       case 10:
-        return LoginScreen(title: 'Logout');
-      // Add cases for other items
-      // ...
+        return LoginScreen(
+          onLogin: () {
+            Navigator.pop(context!); // Close the sidebar
+            Navigator.pushReplacementNamed(
+                context, '/login'); // Navigate to the home screen
+          },
+        );
       default:
-        return Container(); // Return a default widget or an empty container
+        return Container();
     }
   }
 
@@ -113,22 +112,22 @@ class Sidebar extends StatelessWidget {
       (Route<dynamic> route) => false,
     )
         .then((value) {
-      onItemSelected(
-          0); // Reset the selected index to home when navigating to a new page
+      onItemSelected(0);
     });
   }
 
   Widget _buildSidebarItem(
-      IconData icon, String title, int index, BuildContext context,
-      {VoidCallback? onPressed}) {
+      IconData icon, String title, int index, BuildContext context) {
     return InkWell(
-      onTap: () {
-        onItemSelected(index);
-        Navigator.of(context).pop(); // Close the sidebar
-        _navigateToPage(context, _getPageByIndex(index));
-        if (onPressed != null) {
-          onPressed();
+      onTap: () async {
+        if (index == 10) {
+          // Logout action
+          await _handleLogout(context);
         }
+
+        onItemSelected(index);
+        Navigator.of(context).pop();
+        _navigateToPage(context, _getPageByIndex(index, context: context));
       },
       child: ListTile(
         title: Row(
@@ -149,5 +148,10 @@ class Sidebar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _handleLogout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isAuthenticated', false);
   }
 }

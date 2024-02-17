@@ -41,6 +41,7 @@ dependencies:
   # shared:preferences: ^2.0.8
   anim_search_bar: ^2.0.3
   page_transition: "^2.1.0"
+  shared_preferences: "^2.2.2"
 
   
   

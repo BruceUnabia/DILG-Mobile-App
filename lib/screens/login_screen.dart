@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; // Make sure to import your HomeScreen widget
+import 'home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key, required this.title});
+  const LoginScreen({Key? key, required this.onLogin});
 
-  final String title;
+  final VoidCallback onLogin;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -18,11 +19,25 @@ class _LoginScreenState extends State<LoginScreen> {
   String emailError = '';
   String passwordError = '';
   TextEditingController _passwordController = TextEditingController();
+  bool isAuthenticated = false;
 
   @override
-  void dispose() {
-    _passwordController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    checkAuthentication();
+  }
+
+  void checkAuthentication() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
+
+    setState(() {
+      isAuthenticated = _isAuthenticated;
+    });
+
+    if (isAuthenticated) {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
   }
 
   @override
@@ -65,13 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 8),
                     TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          errorText: emailError.isNotEmpty ? emailError : null,
-                        ),
-                        onChanged: (value) {
-                          _email = value;
-                        }),
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        errorText: emailError.isNotEmpty ? emailError : null,
+                      ),
+                      onChanged: (value) {
+                        _email = value;
+                      },
+                    ),
                     SizedBox(height: 8),
                     TextField(
                       controller: _passwordController,
@@ -82,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
-                              // Toggle the visibility of the password
                               _passwordVisible = !_passwordVisible;
                             });
                           },
@@ -97,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: !_passwordVisible,
                       onChanged: (value) {
                         setState(() {
-                          _password = value; // Update _password on each change
+                          _password = value;
                         });
                       },
                     ),
@@ -115,8 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text('Remember Me'),
                         Spacer(),
                         ElevatedButton(
-                          onPressed: () {
-                            // Simple validation check
+                          onPressed: () async {
                             setState(() {
                               emailError = _email.isEmpty
                                   ? 'Please enter your email.'
@@ -127,15 +141,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
 
                             if (_email.isNotEmpty && _password.isNotEmpty) {
-                              // Proceed with login logic
                               bool loginSuccessful = true;
 
                               if (loginSuccessful) {
-                                // Clear navigation stack and go to HomeScreen
-                                Navigator.pushNamedAndRemoveUntil(
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setBool('isAuthenticated', true);
+
+                                setState(() {
+                                  isAuthenticated = true;
+                                });
+
+                                Navigator.pushReplacementNamed(
                                   context,
-                                  '/home', // Replace with the actual route name for your HomeScreen
-                                  (route) => false,
+                                  '/home',
                                 );
                               }
                             }
