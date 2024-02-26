@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'bottom_navigation.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'issuance_pdf_screen.dart';
+import 'library_screen.dart';
+
+class Issuance {
+  final String title;
+
+  Issuance({required this.title});
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,9 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late Timer _timer;
   int _currentPage = 0;
 
+  List<Issuance> _recentlyOpenedIssuances = [];
+
   @override
   void initState() {
     super.initState();
+    _loadRecentIssuances();
     _pageController = PageController(viewportFraction: 0.8);
     _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
       if (_currentPage < 4) {
@@ -34,10 +46,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _loadRecentIssuances() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? recentIssuances = prefs.getStringList('recentIssuances');
+    if (recentIssuances != null) {
+      setState(() {
+        _recentlyOpenedIssuances =
+            recentIssuances.map((title) => Issuance(title: title)).toList();
+      });
+    }
+  }
+
+  void _saveRecentIssuances() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> titles =
+        _recentlyOpenedIssuances.map((issuance) => issuance.title).toList();
+    await prefs.setStringList('recentIssuances', titles);
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
     _timer.cancel(); // Dispose the timer to avoid memory leaks
+    _saveRecentIssuances();
     super.dispose();
   }
 
@@ -120,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'REPUBLIC OF THE PHILIPPINES',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 15,
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -128,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       'DEPARTMENT OF THE INTERIOR AND LOCAL GOVERNMENT',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 9,
+                        fontSize: 8,
                       ),
                     ),
                     Text(
@@ -141,11 +172,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 15.0),
+            const SizedBox(height: 30.0),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'News and Updates:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            // Add the horizontal scrollable cards
+
             SizedBox(
               height: 250.0, // Adjust the height as needed
               child: _buildHorizontalScrollableCards(),
             ),
+            _buildWideButton('ABOUT'),
+            _buildWideButton('THE PROVINCIAL DIRECTOR'),
+            _buildWideButton('VISION AND MISSION'),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -176,9 +223,45 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildWideButton(String label) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ElevatedButton(
+        onPressed: () {
+          // Handle button click
+          print('$label button clicked');
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue[600], // Adjust the color as needed
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildHorizontalScrollableCards() {
     return Container(
-      height: 100.0,
+      height: 150.0,
       child: PageView.builder(
         controller: _pageController,
         scrollDirection: Axis.horizontal,
@@ -212,12 +295,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         'See More',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
+                          fontSize: 20.0,
                         ),
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        size: 20.0,
+                        size: 25.0,
                         color: Colors.blue, // You can customize the color
                       ),
                     ],
@@ -238,7 +321,8 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Card $index clicked');
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 6.0),
+        margin: const EdgeInsets.symmetric(horizontal: 12.0),
+        width: 200.0,
         child: Card(
           elevation: 5.0,
           child: Column(
@@ -290,37 +374,122 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecentIssuances() {
-    List<Map<String, String>> recentIssuances = [
-      {'title': 'Issuance 1', 'subtitle': 'Subtitle for Issuance 1'},
-      {'title': 'Issuance 2', 'subtitle': 'Subtitle for Issuance 2'},
-      {'title': 'Issuance 3', 'subtitle': 'Subtitle for Issuance 3'},
-      {'title': 'Issuance 4', 'subtitle': 'Subtitle for Issuance 4'},
-      {'title': 'Issuance 5', 'subtitle': 'Subtitle for Issuance 5'},
-      {'title': 'Issuance 6', 'subtitle': 'Subtitle for Issuance 6'},
-      {'title': 'Issuance 7', 'subtitle': 'Subtitle for Issuance 7'},
-      {'title': 'Issuance 8', 'subtitle': 'Subtitle for Issuance 8'},
-      {'title': 'Issuance 9', 'subtitle': 'Subtitle for Issuance 9'},
-      {'title': 'Issuance 10', 'subtitle': 'Subtitle for Issuance 10'},
-    ];
+    // Map to keep track of seen titles
+    Map<String, Issuance> seenTitles = {};
 
-    return Column(
-      children: recentIssuances.take(10).map((issuance) {
-        return Column(
-          children: [
-            ListTile(
-              title: Text(issuance['title']!),
-              subtitle: Text(issuance['subtitle']!),
-              trailing: ElevatedButton(
-                onPressed: () {
-                  // Handle button press
+    // Get the first 5 recently opened issuances
+    List<Issuance> recentIssuances = _recentlyOpenedIssuances.take(5).toList();
+
+    // Initially, don't show the "See more" link
+    Widget seeMoreLink = Container();
+
+    // Show the "See more" link only if there are more than 5 recent issuances
+    if (_recentlyOpenedIssuances.length > 5) {
+      seeMoreLink = TextButton(
+        onPressed: () {
+          // Navigate to the Library screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LibraryScreen(
+                onFileOpened: (title, subtitle) {
+                  // Add the opened file to recently opened issuances
+                  setState(() {
+                    _recentlyOpenedIssuances.insert(
+                      0,
+                      Issuance(title: title),
+                    );
+                  });
                 },
-                child: Text('View'),
               ),
             ),
-            const Divider(),
-          ],
-        );
-      }).toList(),
+          );
+        },
+        child: Text(
+          'See more',
+          style: TextStyle(
+            color: Colors.blue, // Set the color to blue
+            decoration: TextDecoration.none, // Remove underline
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              seeMoreLink,
+            ],
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        if (_recentlyOpenedIssuances.isEmpty)
+          Center(
+            child: Text(
+              'No recently opened Issuance/s',
+              style: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        if (_recentlyOpenedIssuances.isNotEmpty) ...[
+          ...recentIssuances.map((issuance) {
+            // Check if the title has already been seen
+            if (seenTitles.containsKey(issuance.title)) {
+              // If yes, skip displaying this issuance
+              return Container();
+            } else {
+              // Otherwise, add it to seen titles and display it
+              seenTitles[issuance.title] = issuance;
+              return Column(
+                children: [
+                  ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          issuance.title.length > 20
+                              ? '${issuance.title.substring(0, 20)}...' // Display only the first 25 characters
+                              : issuance.title,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Remove the current issuance from the list
+                            setState(() {
+                              _recentlyOpenedIssuances.remove(issuance);
+                            });
+                            // Add the current issuance to the top of the list
+                            setState(() {
+                              _recentlyOpenedIssuances.insert(0, issuance);
+                            });
+                            // Navigate to the PDF screen when the button is pressed
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => IssuancePDFScreen(
+                                  title: issuance.title,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text('View'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                ],
+              );
+            }
+          }).toList(),
+        ],
+      ],
     );
   }
 

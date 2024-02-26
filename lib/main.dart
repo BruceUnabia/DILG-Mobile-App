@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'utils/routes.dart';
+import '../screens/login_screen.dart';
+import '../screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,54 +20,28 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      home: const MyAppWrapper(),
-      routes: {
-        '/home': (context) => const HomeScreen(),
-      },
-      initialRoute: '/login',
-    );
-  }
-}
-
-class MyAppWrapper extends StatelessWidget {
-  const MyAppWrapper({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _checkAuthenticationState(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          bool isAuthenticated = snapshot.data ?? false;
-          if (isAuthenticated) {
-            // If authenticated, navigate to the home screen
-            return const HomeScreen();
+      home: FutureBuilder<bool>(
+        future: _checkAuthenticationState(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            bool isAuthenticated = snapshot.data ?? false;
+            return isAuthenticated
+                ? const HomeScreen()
+                : LoginScreen(onLogin: () {
+                    Navigator.pushReplacementNamed(context, '/home');
+                  });
           } else {
-            // If not authenticated, navigate to the login screen
-            return LoginScreen(
-              onLogin: () {
-                // Triggered when the user successfully logs in
-                Navigator.pushReplacementNamed(context, '/home');
-              },
-            );
+            return const CircularProgressIndicator(); // or another loading indicator
           }
-        } else {
-          // Loading state, show nothing or a loading indicator
-          return const SizedBox.shrink();
-        }
-      },
+        },
+      ),
+      routes: Routes.getRoutes(context),
     );
   }
 
-  Future<bool> _checkAuthenticationState() async {
+  static Future<bool> _checkAuthenticationState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
-
-    // If the app is not authenticated, clear the saved authentication state
-    if (!isAuthenticated) {
-      prefs.remove('isAuthenticated');
-    }
-
-    return isAuthenticated;
+    bool? isAuthenticated = prefs.getBool('isAuthenticated');
+    return isAuthenticated ?? false;
   }
 }

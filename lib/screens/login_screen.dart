@@ -35,9 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
       isAuthenticated = _isAuthenticated;
     });
 
-    if (isAuthenticated) {
-      Navigator.pushReplacementNamed(context, '/home');
-    }
+    // if (isAuthenticated) {
+    //   Navigator.pushReplacementNamed(context, '/home');
+    // }
   }
 
   @override

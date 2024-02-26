@@ -1,11 +1,8 @@
-import 'edit_user.dart';
 import 'package:flutter/material.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'details_screen.dart';
 import 'bottom_navigation.dart';
-import 'search_screen.dart';
-import 'library_screen.dart';
-import 'home_screen.dart';
+
 import 'sidebar.dart';
 
 class LatestIssuances extends StatefulWidget {
@@ -112,8 +109,11 @@ class _LatestIssuancesState extends State<LatestIssuances> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Row(
                             children: [
-                              Icon(Icons.arrow_downward,
-                                  color: Colors.blue[900]),
+                              Text(
+                                '\u2217', // Asterisk
+                                style: TextStyle(
+                                    fontSize: 24, color: Colors.blue[900]),
+                              ),
                               SizedBox(width: 10.0),
                               Expanded(
                                 child: Text(
@@ -265,24 +265,24 @@ class _LatestIssuancesState extends State<LatestIssuances> {
   }
 
   void _navigateToSelectedPage(BuildContext context, int index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          switch (index) {
-            case 0:
-              return HomeScreen();
-            case 1:
-              return SearchScreen();
-            case 2:
-              return LibraryScreen();
-            case 3:
-              return EditUser();
-            default:
-              return LatestIssuances(); // Fallback to the current page
-          }
-        },
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) {
+    //       switch (index) {
+    //         case 0:
+    //           return HomeScreen();
+    //         case 1:
+    //           return SearchScreen();
+    //         case 2:
+    //           return LibraryScreen();
+    //         case 3:
+    //           return EditUser();
+    //         default:
+    //           return LatestIssuances(); // Fallback to the current page
+    //       }
+    //     },
+    //   ),
+    // );
   }
 }

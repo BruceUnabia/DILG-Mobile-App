@@ -75,23 +75,77 @@ class Sidebar extends StatelessWidget {
       case 0:
         return const HomeScreen();
       case 1:
-        return LatestIssuances();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: LatestIssuances(),
+        );
       case 2:
-        return JointCirculars();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: JointCirculars(),
+        );
       case 3:
-        return MemoCirculars();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: MemoCirculars(),
+        );
       case 4:
-        return PresidentialDirectives();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: PresidentialDirectives(),
+        );
       case 5:
-        return DraftIssuances();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: DraftIssuances(),
+        );
       case 6:
-        return RepublicActs();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: RepublicActs(),
+        );
       case 7:
-        return LegalOpinions();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: LegalOpinions(),
+        );
       case 8:
-        return About();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: About(),
+        );
       case 9:
-        return Developers();
+        return WillPopScope(
+          onWillPop: () async {
+            Navigator.pushReplacementNamed(context!, '/home');
+            return Future.value(false); // Prevent popping
+          },
+          child: Developers(),
+        );
       case 10:
         return LoginScreen(
           onLogin: () {

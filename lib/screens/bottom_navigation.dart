@@ -24,7 +24,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> _pages = [
     HomeScreen(),
     SearchScreen(),
-    LibraryScreen(),
+    LibraryScreen(
+      onFileOpened: (fileName, filePath) {
+        // Implement your logic when file is opened
+        print('File opened: $fileName');
+      },
+    ),
     EditUser(),
   ];
 
