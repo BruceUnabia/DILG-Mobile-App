@@ -5,6 +5,7 @@ import 'login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'about_screen.dart';
 import 'developers_screen.dart';
+import 'bottom_navigation.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String userName;
@@ -47,6 +48,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: Colors.blue[900],
       ),
       body: _buildBody(),
+      bottomNavigationBar: BottomNavigation(
+        onTabTapped: (index) {
+          setState(() {
+            // Handle bottom navigation item taps if needed
+          });
+        },
+        currentIndex: 3,
+      ),
     );
   }
 
