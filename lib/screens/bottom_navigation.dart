@@ -3,7 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'home_screen.dart';
 import 'search_screen.dart';
 import 'library_screen.dart';
-import 'edit_user.dart';
+import 'settings_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int currentIndex;
@@ -30,7 +30,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
         print('File opened: $fileName');
       },
     ),
-    EditUser(),
+    SettingsScreen(
+      userName: 'Bruce Unabia',
+    ),
   ];
 
   @override
@@ -62,8 +64,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: 'Library',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       backgroundColor: Colors.blue[900],

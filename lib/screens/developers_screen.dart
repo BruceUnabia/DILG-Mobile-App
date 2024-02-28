@@ -16,19 +16,19 @@ class Developers extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.white),
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        iconTheme: IconThemeData(
+          color: Colors.white, // Change the color of the back button arrow here
         ),
         backgroundColor: Colors.blue[900],
       ),
-      drawer: Sidebar(
-        currentIndex: 9,
-        onItemSelected: (index) {
-          // Handle item selection if needed
-          _navigateToSelectedPage(context, index);
-        },
-      ),
+
+      // drawer: Sidebar(
+      //   currentIndex: 9,
+      //   onItemSelected: (index) {
+      //     // Handle item selection if needed
+      //     _navigateToSelectedPage(context, index);
+      //   },
+      // ),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

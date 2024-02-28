@@ -19,6 +19,33 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+// Custom clipper for the pointy end
+class PointyButtonClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    // Left pointy end
+    path.moveTo(20, 0); // Move to the left point
+    path.lineTo(0, size.height / 2); // Line to the center height
+    path.lineTo(20, size.height); // Line back to the top left
+
+    // Right pointy end
+    path.lineTo(
+        size.width - 20, size.height); // Line to the top right (width - 20)
+    path.lineTo(size.width, size.height / 2); // Line to the center height
+    path.lineTo(size.width - 20, 0); // Line back to the top right
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
 class _HomeScreenState extends State<HomeScreen> {
   DateTime? currentBackPressTime;
   late PageController _pageController;
@@ -227,33 +254,36 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          // Handle button click
-          print('$label button clicked');
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue[600], // Adjust the color as needed
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+      child: ClipPath(
+        clipper: PointyButtonClipper(), // Custom clipper for pointy ends
+        child: ElevatedButton(
+          onPressed: () {
+            // Handle button click
+            print('$label button clicked');
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue[600], // Adjust the color as needed
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward,
                   color: Colors.white,
                 ),
-              ),
+              ],
             ),
-            Icon(
-              Icons.arrow_forward,
-              color: Colors.white,
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'details_screen.dart';
 import 'bottom_navigation.dart';
-
 import 'sidebar.dart';
 
 class LatestIssuances extends StatefulWidget {
@@ -35,38 +34,50 @@ class _LatestIssuancesState extends State<LatestIssuances> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Latest Issuances',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        if (Scaffold.of(context).isDrawerOpen) {
+          Navigator.of(context).pop();
+          return false; // Prevent back navigation
+        } else {
+          // Navigate back to the home page when the back button is pressed
+          Navigator.pushReplacementNamed(context, '/home');
+          return Future.value(false); // Prevent popping
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Latest Issuances',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
-        ),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: Colors.white),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
           ),
+          backgroundColor: Colors.blue[900],
         ),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: _buildBody(),
-      drawer: Sidebar(
-        currentIndex: 1,
-        onItemSelected: (index) {
-          _navigateToSelectedPage(context, index);
-        },
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: 0,
-        onTabTapped: (index) {
-          setState(() {
-            // _currentIndex = index;
-          });
-          // Handle navigation or other actions here
-        },
+        body: _buildBody(),
+        drawer: Sidebar(
+          currentIndex: 1,
+          onItemSelected: (index) {
+            _navigateToSelectedPage(context, index);
+          },
+        ),
+        bottomNavigationBar: BottomNavigation(
+          currentIndex: 0,
+          onTabTapped: (index) {
+            setState(() {
+              // _currentIndex = index;
+            });
+            // Handle navigation or other actions here
+          },
+        ),
       ),
     );
   }
@@ -264,25 +275,24 @@ class _LatestIssuancesState extends State<LatestIssuances> {
     );
   }
 
+  void _handleBackButton(BuildContext context) {
+    if (Scaffold.of(context).isDrawerOpen) {
+      // If the drawer is open, close it
+      Navigator.of(context).pop();
+    } else {
+      // Otherwise, navigate back to the home page
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
   void _navigateToSelectedPage(BuildContext context, int index) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) {
-    //       switch (index) {
-    //         case 0:
-    //           return HomeScreen();
-    //         case 1:
-    //           return SearchScreen();
-    //         case 2:
-    //           return LibraryScreen();
-    //         case 3:
-    //           return EditUser();
-    //         default:
-    //           return LatestIssuances(); // Fallback to the current page
-    //       }
-    //     },
-    //   ),
-    // );
+    // Close the drawer
+    Navigator.of(context).pop();
+
+    // Navigate to the selected page
+    Navigator.pushReplacementNamed(context, '/home');
+
+    // Pop all routes until the home page is reached
+    Navigator.popUntil(context, ModalRoute.withName('/home'));
   }
 }

@@ -60,10 +60,6 @@ class Sidebar extends StatelessWidget {
             _buildSidebarItem(
                 Icons.library_books, 'Legal Opinions', 7, context),
             Divider(color: Colors.white),
-            _buildSidebarItem(Icons.info, 'About', 8, context),
-            _buildSidebarItem(Icons.people, 'Developers', 9, context),
-            Divider(color: Colors.white),
-            _buildSidebarItem(Icons.exit_to_app, 'Logout', 10, context),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/routes.dart';
 import '../screens/login_screen.dart';
 import '../screens/home_screen.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
