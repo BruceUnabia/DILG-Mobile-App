@@ -97,7 +97,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20.0),
+            Divider(
+              color: Colors.grey,
+              height: 15,
+              thickness: 2,
+            ),
+            SizedBox(height: 30.0),
             // User Profile Button
             InkWell(
               onTap: () {
