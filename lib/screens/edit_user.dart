@@ -70,23 +70,52 @@ class _EditUserState extends State<EditUser> {
                 child: Container(
                   width: 130,
                   height: 130,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blue[900],
-                    image: _userImage != null
-                        ? DecorationImage(
-                            image: FileImage(_userImage!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
+                  alignment: Alignment.center, // Center the content
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[500],
+                          image: _userImage != null
+                              ? DecorationImage(
+                                  image: FileImage(_userImage!),
+                                  fit: BoxFit
+                                      .cover, // Set BoxFit.cover for the image
+                                )
+                              : null,
+                        ),
+                        child: _userImage == null
+                            ? Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 110,
+                              )
+                            : null,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors
+                              .white, // White background for the camera icon
+                          border: Border.all(
+                            color: Colors.grey, // Gray border color
+                            width: 1.0, // Border width
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors
+                              .blue[700], // Blue color for the camera icon
+                        ),
+                      ),
+                    ],
                   ),
-                  child: _userImage == null
-                      ? Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 110,
-                        )
-                      : null,
                 ),
               ),
 

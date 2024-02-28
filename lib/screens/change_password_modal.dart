@@ -43,13 +43,15 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
 
       if (_passwordController.text.isEmpty) {
         _passwordError = 'Password is required';
+      } else if (!(_containsCapitalLetter(_passwordController.text) ||
+          _containsSpecialCharacter(_passwordController.text))) {
+        _passwordError =
+            'Password must contain at least one capital letter or one special character';
       }
 
       if (_confirmPasswordController.text.isEmpty) {
         _confirmPasswordError = 'Confirm Password is required';
-      }
-
-      if (_passwordController.text != _confirmPasswordController.text) {
+      } else if (_passwordController.text != _confirmPasswordController.text) {
         _confirmPasswordError = 'Passwords do not match';
       }
 
@@ -58,6 +60,14 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
         _showPasswordUpdatedDialog(context);
       }
     });
+  }
+
+  bool _containsCapitalLetter(String value) {
+    return value.contains(RegExp(r'[A-Z]'));
+  }
+
+  bool _containsSpecialCharacter(String value) {
+    return value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
   }
 
   @override
