@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'change_password_modal.dart';
 import 'edit_user.dart';
 import 'login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'about_screen.dart';
 import 'developers_screen.dart';
 import 'bottom_navigation.dart';
+import 'change_password_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   final String userName;
@@ -30,11 +30,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/home');
               },
-              color: Colors.white, // Set the color of the back button
+              color: Colors.white,
             ),
-            SizedBox(
-              width: 8.0,
-            ), // Adjust the spacing between the back button and title
+            SizedBox(width: 8.0),
             Text(
               'Settings',
               style: TextStyle(
@@ -106,7 +104,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // User Profile Button
             InkWell(
               onTap: () {
-                // Navigate to the user profile page (EditUser)
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => EditUser()),
@@ -151,8 +148,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Change Password Button
             InkWell(
               onTap: () {
-                // Show the change password modal
-                _showChangePasswordModal(context);
+                // Navigate to the ChangePasswordScreen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChangePasswordScreen()),
+                );
               },
               child: Container(
                 padding: EdgeInsets.all(16.0),
@@ -234,7 +235,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // About Button
             InkWell(
               onTap: () {
-                // Handle About button tap
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => About()),
@@ -279,7 +279,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Developers Button
             InkWell(
               onTap: () {
-                // Handle Developers button tap
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Developers()),
@@ -324,7 +323,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Logout Button
             InkWell(
               onTap: () {
-                // Handle Logout button tap
                 _showLogoutDialog(context);
               },
               child: Container(
@@ -381,14 +379,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context);
               },
               child: Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
-                _logout(); // Call the updated logout function
+                Navigator.pop(context);
+                _logout();
               },
               child: Text('Logout'),
             ),
@@ -399,7 +397,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _logout() async {
-    // Clear user authentication state
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isAuthenticated', false);
 
@@ -408,20 +405,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
 
     Navigator.pushReplacementNamed(context, '/login');
-  }
-
-  void _showChangePasswordModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: MediaQuery.of(context).size.width *
-                0.99, // Adjust the width as needed
-            child: ChangePasswordModal(),
-          ),
-        );
-      },
-    );
   }
 }
