@@ -12,6 +12,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
   String _confirmPasswordError = '';
+  String _passwordError = '';
 
   void _showPasswordChangedDialog(BuildContext context) {
     showDialog(
@@ -87,6 +88,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     color: Colors.grey,
                   ),
                 ),
+                errorText: _passwordError.isNotEmpty ? _passwordError : null,
               ),
               obscureText: _obscurePassword,
             ),
@@ -147,16 +149,31 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   void _resetPassword() {
     setState(() {
-      // Check if passwords match
-      if (_passwordController.text == _confirmPasswordController.text) {
+      // Check if passwords are empty
+      if (_passwordController.text.isEmpty ||
+          _confirmPasswordController.text.isEmpty) {
+        _passwordError = 'Password cannot be empty';
+        _confirmPasswordError = 'Password cannot be empty';
+      } else if (_passwordController.text == _confirmPasswordController.text) {
+        // Check if the password contains special characters
+        if (!_containsSpecialCharacters(_passwordController.text)) {
+          _passwordError = 'Password must contain special characters (!@%)';
+          _confirmPasswordError =
+              'Password must contain special characters (!@%)';
+          return;
+        }
         // Implement your logic to change the password
         _showPasswordChangedDialog(context);
       } else {
-        // Set an error message that passwords don't match
-        setState(() {
-          _confirmPasswordError = 'Passwords do not match';
-        });
+        _passwordError = 'Password do not match';
+        _confirmPasswordError = 'Password do not match';
       }
     });
+  }
+
+  bool _containsSpecialCharacters(String value) {
+    String pattern = r'(?=.*[!@%$^&*])';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(value);
   }
 }

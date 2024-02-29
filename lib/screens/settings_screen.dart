@@ -95,12 +95,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
+            SizedBox(height: 50.0),
             Divider(
               color: Colors.grey,
-              height: 15,
-              thickness: 2,
+              height: 1,
+              thickness: 1,
             ),
-            SizedBox(height: 30.0),
+            SizedBox(height: 15.0), // Additional spacing
             // User Profile Button
             InkWell(
               onTap: () {
@@ -190,7 +191,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 1,
               thickness: 1,
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 15.0), // Additional spacing
             // FAQs Button
             InkWell(
               onTap: () {
@@ -231,7 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 1,
               thickness: 1,
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 15.0), // Additional spacing
             // About Button
             InkWell(
               onTap: () {
@@ -275,7 +276,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 1,
               thickness: 1,
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 15.0), // Additional spacing
             // Developers Button
             InkWell(
               onTap: () {
@@ -319,7 +320,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: 1,
               thickness: 1,
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 15.0), // Additional spacing
             // Logout Button
             InkWell(
               onTap: () {
@@ -355,7 +356,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10.0),
+            SizedBox(height: 15.0), // Additional spacing
             // Additional Divider Below Logout
             Divider(
               color: Colors.grey,
